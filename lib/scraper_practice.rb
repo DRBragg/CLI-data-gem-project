@@ -4,6 +4,7 @@ require 'pry'
 
 def scrape
   beer_info = []
+  commercial_beer = {}
 
   site = Nokogiri::HTML(open('https://www.craftbeer.com/beer/beer-styles-guide'))
 
