@@ -5,6 +5,7 @@ require 'pry'
 
 def scrape
   beer_info = []
+  commercial_beer = {}
 
   site = Nokogiri::HTML(open("https://www.craftbeer.com/beer/beer-styles-guide"))
   
@@ -12,11 +13,18 @@ def scrape
     each_beer = {
       :style_family => beer_site.css(".family-name").text,
       :style_name => beer_site.css(".style-name").text,
-      :style_description => beer_site.css("p")[1].text
-      # :commercial_examples => {
-      #   # nested hash containing brewery and beer name
-      # }
+      :style_description => beer_site.css("p")[1].text,
+      :commercial_example => []
     }
+
+    beer_site.css(".winners li").each do |example|
+      commercial_beer = {
+        :brewery => example.css(".brewery").text,
+        :beer_name => example.css(".value").text 
+      }
+      each_beer[:commercial_example] << commercial_beer
+    end
+
 
 
 
@@ -31,11 +39,6 @@ end
 
 scrape
 
-    # beer_site.css(".winners").each do |us_beer|
-    #   commercial_beers = {
-    #     :brewery => us_beer.css(".value").text,
-    #     :beer_name => us_beer.css(".brewery").text
-    #   }
-    # end
+
 
     # Test
